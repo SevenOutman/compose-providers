@@ -26,3 +26,21 @@ test("Compose multiple providers", () => {
     expect.anything(),
   )
 })
+
+test.only("Render providers in correct order", () => {
+  const FirstProvider = fn((props) => props.children)
+  const SecondProvider = fn((props) => {
+    if (props.children.type === FirstProvider) {
+      throw new Error("Wrong render order!")
+    }
+    return props.children
+  })
+
+  const Wrapper = composeProviders([FirstProvider, SecondProvider])
+  const { rerender } = render(<p>Works!</p>, {
+    wrapper: Wrapper,
+  })
+
+  // This happened on second render
+  rerender(<p>Works!</p>)
+})

@@ -74,10 +74,12 @@ export const composeProviders: ComposeProviders = (
   providers: Array<React.ComponentType | [React.ComponentType, any]>,
   displayName?: string,
 ) => {
+  // Pass providers as outer-first
+  // but reduce them as inner-first
+  const innerFirstProviders = providers.slice().reverse()
   function Composed(props: React.PropsWithChildren<{}>) {
-    return providers
-      .reverse()
-      .reduce<React.ReactElement>((children, provider) => {
+    return innerFirstProviders.reduce<React.ReactElement>(
+      (children, provider) => {
         if (Array.isArray(provider)) {
           const [Provider, providerProps] = provider
 
@@ -87,7 +89,9 @@ export const composeProviders: ComposeProviders = (
         const Provider = provider
 
         return createElement(Provider, null, children)
-      }, createElement(Fragment, null, props.children))
+      },
+      createElement(Fragment, null, props.children),
+    )
   }
   Composed.displayName = displayName
 
