@@ -1,35 +1,65 @@
-**💛 You can help the author become a full-time open-source maintainer by [sponsoring him on GitHub](https://github.com/sponsors/egoist).**
+# compose-providers
 
----
+Compose your React provider components to avoid boilerplates.
 
-# my-ts-lib
-
-[![npm version](https://badgen.net/npm/v/my-ts-lib)](https://npm.im/my-ts-lib) [![npm downloads](https://badgen.net/npm/dm/my-ts-lib)](https://npm.im/my-ts-lib)
-
-## Using this template
-
-- Search `my-ts-lib` and replace it with your custom package name.
-- Search `egoist` and replace it with your name.
-
-Features:
-
-- Package manager [pnpm](https://pnpm.js.org/), safe and fast
-- Release with [semantic-release](https://npm.im/semantic-release)
-- Bundle with [tsup](https://github.com/egoist/tsup)
-- Test with [vitest](https://vitest.dev)
-
-To skip CI (GitHub action), add `skip-ci` to commit message. To skip release, add `skip-release` to commit message.
+[![npm version](https://badgen.net/npm/v/compose-providers)](https://npm.im/compose-providers) [![npm downloads](https://badgen.net/npm/dm/compose-providers)](https://npm.im/compose-providers)
 
 ## Install
 
 ```bash
-npm i my-ts-lib
+npm i compose-providers
 ```
 
-## Sponsors
+## Usage
 
-[![sponsors](https://sponsors-images.egoist.sh/sponsors.svg)](https://github.com/sponsors/egoist)
+Assume you're using serveral libraries that requires using their provider components like:
+
+- react-error-boundary
+- react-intl
+- react-query
+- react-router
+
+and you have to nest them around your app to get everything work
+
+```jsx
+render(
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <IntlProvider locale={locale} messages={messages}>
+        <BrowserRouter>{/** your app */}</BrowserRouter>
+      </IntlProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>,
+)
+```
+
+With `compose-providers` you can compose those providers into one component so that you get rid of all those boilerplates.
+
+```jsx
+import { composeProviders } from "compose-providers"
+
+const AppContainer = composeProviders([
+  ErrorBoundary,
+  // You won't be unfamiliar if you have configured tools like babel/eslint
+  [
+    QueryClientProvider,
+    {
+      client: queryClient,
+    },
+  ],
+  [
+    IntlProvider,
+    {
+      locale,
+      messages,
+    },
+  ],
+  BrowserRouter,
+])
+
+render(<AppContainer>{/** your app */}</AppContainer>)
+```
 
 ## License
 
-MIT &copy; [EGOIST](https://github.com/sponsors/egoist)
+MIT &copy; [SevenOutman](https://github.com/SevenOutman)
