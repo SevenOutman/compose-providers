@@ -60,6 +60,40 @@ const AppContainer = composeProviders([
 render(<AppContainer>{/** your app */}</AppContainer>)
 ```
 
+This is especiall useful when you are writing tests and need to combine different providers as wrappers to get your component work:
+
+```jsx
+// RouteComponent.test.tsx
+import { render } from "@testing-library/react"
+
+// const wrapper = (props) => (
+//   <QueryClientProvider>
+//     <BrowserRouter>{props.children}</BrowserRouter>
+//   </QueryClientProvider>
+// )
+
+const wrapper = composeProviders([QueryClientProvider, BrowserRouter])
+
+render(<RouteComponent />, {
+  wrapper,
+})
+
+// IntlComponent.test.tsx
+import { render } from "@testing-library/react"
+
+// const wrapper = (props) => (
+//   <QueryClientProvider>
+//     <IntlProvider>{props.children}</IntlProvider>
+//   </QueryClientProvider>
+// )
+
+const wrapper = composeProviders([QueryClientProvider, IntlProvider])
+
+render(<IntlComponent />, {
+  wrapper,
+})
+```
+
 ## License
 
 MIT &copy; [SevenOutman](https://github.com/SevenOutman)
