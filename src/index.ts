@@ -82,6 +82,21 @@ interface ComposeProviders {
     ],
     displayName?: string,
   ): React.FC
+  <P1, P2, P3, P4, P5, P6, P7, P8, P9, P10>(
+    providers: [
+      ProviderConfig<P1>,
+      ProviderConfig<P2>,
+      ProviderConfig<P3>,
+      ProviderConfig<P4>,
+      ProviderConfig<P5>,
+      ProviderConfig<P6>,
+      ProviderConfig<P7>,
+      ProviderConfig<P8>,
+      ProviderConfig<P9>,
+      ProviderConfig<P10>,
+    ],
+    displayName?: string,
+  ): React.FC
 }
 
 export const composeProviders: ComposeProviders = (

@@ -27,7 +27,7 @@ test("Compose multiple providers", () => {
   )
 })
 
-test.only("Render providers in correct order", () => {
+test("Render providers in correct order", () => {
   const FirstProvider = fn((props) => props.children)
   const SecondProvider = fn((props) => {
     if (props.children.type === FirstProvider) {
